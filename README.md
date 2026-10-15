@@ -8,10 +8,10 @@ DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放�
 - 双击按钮 → 宿主用 Windows 计划任务拉起一个**脱离 DSH 进程树**的 PowerShell 脚本，`taskkill /T` 强杀整个 DSH 进程树，随后重新启动 `DeepSeek Harness.exe`。
 - 有 Agent 会话**运行中**时按钮置灰禁用（依据 DSH 会话状态 `running`）。
 - 无会话运行时按钮可点；宿主管理保存一个「重启待办」，便于后续扩展「重启后回到原会话」等流程。
-<img width="2561" height="1638" alt="dsh-pluin-restart-01" src="https://github.com/user-attachments/assets/55b8ead7-5a63-4f8e-9dcc-08662a5939a0" />
 
-<img width="2558" height="1638" alt="dsh-pluin-restart-02" src="https://github.com/user-attachments/assets/81a37beb-d2e0-4d52-aeca-5e5e58cd12d8" />
+<img width="2558" height="1638" alt="dsh-pluin-restart-02" src="https://github.com/user-attachments/assets/1cd364ed-3048-4104-928c-46566ba9bcc6" />
 
+<img width="2561" height="1638" alt="dsh-pluin-restart-01" src="https://github.com/user-attachments/assets/93e5d1e5-6647-4e03-9f8f-e491e3a4640d" />
 
 ## 依赖
 
