@@ -1,5 +1,8 @@
 # dsh-plugin-restart
 
+> **DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。**
+> **DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness; it is greyed out while an agent session is running.**
+
 DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放一个「⟳ 重启 DSH」按钮，**双击**即可整进程重启 DeepSeek Harness；当有 Agent 会话正在运行时，按钮自动置灰禁用，避免打断进行中的工作。
 
 ## 功能
