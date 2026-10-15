@@ -1,0 +1,10 @@
+# Node
+node_modules/
+*.tsbuildinfo
+
+# Diagnostic / local runtime output
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
