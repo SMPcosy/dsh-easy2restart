@@ -3,7 +3,7 @@ param(
     [Parameter(Mandatory = $true)][string]$ExePath
 )
 
-# dsh-plugin-restart 重启脚本
+# dsh-plugin-easy2restart 重启脚本
 # 由 Windows 计划任务 (schtasks) 拉起，因此脱离 DSH 进程树，
 # 即使 DSH 被 /T 强杀，本脚本仍能存活并完成重启。
 

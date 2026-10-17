@@ -1,5 +1,5 @@
 # ============================================================================
-# dsh-plugin-restart — DSH bundle patch
+# dsh-plugin-easy2restart — DSH bundle patch
 # ============================================================================
 # 将重启插件插入当前 profile 的配置树（宿主插件 + Web 客户端端）。
 # 安装方式（无需手工改 profile）：
@@ -7,5 +7,5 @@
 # 卸载：把本条目从 profile 的 cordis.patch.yml / bundle 列表移除后重启 DSH。
 
 - insert:
-    - id: dsh-plugin-restart
-      name: dsh-plugin-restart
+    - id: dsh-plugin-easy2restart
+      name: dsh-plugin-easy2restart

@@ -1,4 +1,4 @@
-# dsh-plugin-restart
+# dsh-plugin-easy2restart
 
 > **DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。**
 > **DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness; it is greyed out while an agent session is running.**
@@ -27,14 +27,14 @@ DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放�
 
 ```bash
 # 用 link 方式装本地副本（推荐，便于维护/调试）
-git clone https://github.com/SMPcosy/dsh-plugin-restart
+git clone https://github.com/SMPcosy/dsh-plugin-easy2restart
 dsh plugin --profile desktop add link:<克隆或本目录的绝对路径>
 ```
 
 若发布到 registry：
 
 ```bash
-dsh plugin --profile desktop add dsh-plugin-restart
+dsh plugin --profile desktop add dsh-plugin-easy2restart
 ```
 
 装完**重启 DeepSeek Harness**，侧边栏底部账号头像上方即出现「⟳」按钮。
@@ -48,21 +48,21 @@ dsh plugin --profile desktop add dsh-plugin-restart
 ## 卸载
 
 ```bash
-dsh plugin --profile desktop remove dsh-plugin-restart
+dsh plugin --profile desktop remove dsh-plugin-easy2restart
 ```
 
 然后重启 DSH 使改动生效。
 
 ## 工作原理（简述）
 
-- `lib/index.js`（宿主/Cordis 插件）：注册 `/api/dsh-plugin-restart/*` HTTP 路由；`/restart` 记录待办并调用 `scheduleRestart`，该函数用 `schtasks` 创建一个立即运行的重启任务，由计划任务服务启动（**脱离 DSH 进程树**），执行 `restart/restart.ps1`。
+- `lib/index.js`（宿主/Cordis 插件）：注册 `/api/dsh-plugin-easy2restart/*` HTTP 路由；`/restart` 记录待办并调用 `scheduleRestart`，该函数用 `schtasks` 创建一个立即运行的重启任务，由计划任务服务启动（**脱离 DSH 进程树**），执行 `restart/restart.ps1`。
 - `restart/restart.ps1`：`taskkill /PID <主进程> /T /F` 结束整个 DSH 进程树，等待退出后重新 `Start-Process DeepSeek Harness.exe`。
 - `lib/client.js`（Web 客户端）：注入 `sidebar.footer.action` 渲染按钮；用 `useSessionStatus` 判断是否有会话在运行以决定是否禁用。
 
 ## 目录结构
 
 ```
-dsh-plugin-restart/
+dsh-plugin-easy2restart/
 ├─ package.json         # 插件清单（dsh.client / dsh.bundle 声明）
 ├─ cordis.patch.yml     # bundle 挂载声明
 ├─ lib/
@@ -75,7 +75,7 @@ dsh-plugin-restart/
 ## 备注
 
 - 这是改安装版主程序之外的一种插件方式：直接以本地 bundle 加入 profile，不修改 `app.asar`。
-- 若希望「重启完成后自动回到原会话并填入『重启完成』」，可在 `/restart` 的待办（`~/.dsh/storages/dsh-plugin-restart/pending.json`）基础上扩展（当前版本不自动填写输入框）。
+- 若希望「重启完成后自动回到原会话并填入『重启完成』」，可在 `/restart` 的待办（`~/.dsh/storages/dsh-plugin-easy2restart/pending.json`）基础上扩展（当前版本不自动填写输入框）。
 
 ## License
 
