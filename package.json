@@ -1,6 +1,6 @@
 ﻿{
   "name": "dsh-plugin-easy2restart",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness; it is greyed out while an agent session is running. （中文：DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。）",
   "keywords": ["deepseek-harness", "dsh", "dsh-plugin", "restart", "relaunch"],
