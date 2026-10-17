@@ -1,9 +1,10 @@
 # dsh-plugin-easy2restart
 
-> **DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。**
-> **DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness; it is greyed out while an agent session is running.**
+# 已发布到官方NPM
 
-DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放一个「🔄 重启 DSH」按钮，**双击**即可整进程重启 DeepSeek Harness；当有 Agent 会话正在运行时，按钮自动置灰禁用，避免打断进行中的工作。
+> **DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。**
+
+DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放一个「⟳ 重启 DSH」按钮，**双击**即可整进程重启 DeepSeek Harness；当有 Agent 会话正在运行时，按钮自动置灰禁用，避免打断进行中的工作。
 
 ## 功能
 
@@ -26,10 +27,10 @@ DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放�
 > 前提：`dsh` 命令在 PATH 中（DeepSeek Harness 自带）。
 
 ```bash
-# 用 link 方式装本地副本（推荐，便于维护/调试）
-git clone https://github.com/SMPcosy/dsh-plugin-easy2restart
-dsh plugin --profile desktop add link:<克隆或本目录的绝对路径>
+dsh-plugin-easy2restart
 ```
+复制上述内容（插件名），进行如下操作：
+<img width="2558" height="1640" alt="dsh-plugin-easy2restart安装图示​" src="https://github.com/user-attachments/assets/6b719ee2-7ed9-4913-8c3b-99709d5b5e06" />
 
 若发布到 registry：
 
@@ -37,11 +38,11 @@ dsh plugin --profile desktop add link:<克隆或本目录的绝对路径>
 dsh plugin --profile desktop add dsh-plugin-easy2restart
 ```
 
-装完**重启 DeepSeek Harness**，侧边栏底部账号头像上方即出现「🔄」按钮。
+装完**重启 DeepSeek Harness**，侧边栏底部账号头像上方即出现「⟳」按钮。
 
 ## 使用
 
-- **双击**「🔄」按钮即可重启 DSH。
+- **双击**「⟳」按钮即可重启 DSH。
 - 当有会话正在运行时按钮为灰色（不可点），会话空闲时可正常重启。
 - 重启由计划任务拉起，与 DSH 自身退出无关，即使 DSH 被强杀也能自动重新启动。
 
