@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/<owner>/dsh-plugin-restart.git"
+    "url": "https://github.com/SMPcosy/dsh-plugin-restart.git"
   },
   "exports": {
     ".": "./lib/index.js",

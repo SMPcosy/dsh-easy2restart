@@ -27,7 +27,7 @@ DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放�
 
 ```bash
 # 用 link 方式装本地副本（推荐，便于维护/调试）
-git clone https://github.com/<owner>/dsh-plugin-restart
+git clone https://github.com/SMPcosy/dsh-plugin-restart
 dsh plugin --profile desktop add link:<克隆或本目录的绝对路径>
 ```
 
