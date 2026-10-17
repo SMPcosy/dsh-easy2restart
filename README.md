@@ -1,5 +1,8 @@
 # dsh-plugin-easy2restart
 
+<details open>
+<summary><b>🀄 中文（默认展开）</b></summary>
+
 # 已发布到官方NPM
 
 > **DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。**
@@ -81,3 +84,92 @@ dsh-plugin-easy2restart/
 ## License
 
 MIT
+
+</details>
+
+<details>
+<summary><b>🌐 English</b></summary>
+
+# Published on official NPM
+
+> **DSH restart plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness; the button is greyed out while an agent session is running.**
+
+A DeepSeek Harness restart plugin: it places a "⟳ Restart DSH" button in the left sidebar **above the account avatar / settings**; **double-click** it to restart the whole DeepSeek Harness process. While an agent session is running, the button is automatically greyed out to avoid interrupting work in progress.
+
+## Features
+
+- Injects the restart button into the `sidebar.footer.action` slot (above the account avatar / settings).
+- Double-click → the host launches a PowerShell script **detached from the DSH process tree** via Windows Task Scheduler; the script uses `taskkill /T` to force-kill the whole DSH process tree, then relaunches `DeepSeek Harness.exe`.
+- The button is greyed out while an agent session is **running** (based on the DSH session status `running`).
+- When no session is running, the button is clickable; the host keeps a "restart pending" record so that flows such as "return to the original session after restart" can be added later.
+
+<img width="2558" height="1638" alt="dsh-pluin-restart-02" src="https://github.com/user-attachments/assets/1cd364ed-3048-4104-928c-46566ba9bcc6" />
+
+<img width="2561" height="1638" alt="dsh-pluin-restart-01" src="https://github.com/user-attachments/assets/93e5d1e5-6647-4e03-9f8f-e491e3a4640d" />
+
+## Requirements
+
+- DeepSeek Harness desktop (0.2.0-rc or later)
+- Node.js ≥ 22
+
+## Installation
+
+> Prerequisite: the `dsh` command must be on PATH (bundled with DeepSeek Harness).
+
+```bash
+dsh-plugin-easy2restart
+```
+Copy the plugin name above, then follow the steps below:
+<img width="2558" height="1640" alt="dsh-plugin-easy2restart install illustration" src="https://github.com/user-attachments/assets/6b719ee2-7ed9-4913-8c3b-99709d5b5e06" />
+
+If publishing to a registry:
+
+```bash
+dsh plugin --profile desktop add dsh-plugin-easy2restart
+```
+
+After installing, **restart DeepSeek Harness**; the "⟳" button then appears at the bottom of the sidebar, above the account avatar.
+
+## Usage
+
+- **Double-click** the "⟳" button to restart DSH.
+- The button is greyed out (not clickable) while a session is running; it works normally when the session is idle.
+- The restart is launched by a scheduled task and is independent of DSH exiting itself, so DSH restarts automatically even if it is force-killed.
+
+## Uninstall
+
+```bash
+dsh plugin --profile desktop remove dsh-plugin-easy2restart
+```
+
+Then restart DSH for the change to take effect.
+
+## How it works (brief)
+
+- `lib/index.js` (host / Cordis plugin): registers the `/api/dsh-plugin-easy2restart/*` HTTP routes; `/restart` records the pending entry and calls `scheduleRestart`, which uses `schtasks` to create an immediately-running restart task. The task is started by the Task Scheduler service (**detached from the DSH process tree**) and executes `restart/restart.ps1`.
+- `restart/restart.ps1`: `taskkill /PID <main process> /T /F` terminates the whole DSH process tree, waits for it to exit, then runs `Start-Process DeepSeek Harness.exe`.
+- `lib/client.js` (Web client): injects into `sidebar.footer.action` to render the button; uses `useSessionStatus` to decide whether to disable it.
+
+## Directory structure
+
+```
+dsh-plugin-easy2restart/
+├─ package.json         # plugin manifest (dsh.client / dsh.bundle declarations)
+├─ cordis.patch.yml     # bundle mount declaration
+├─ lib/
+│  ├─ index.js          # host side: HTTP routes + restart scheduling
+│  └─ client.js         # client side: sidebar button
+└─ restart/
+   └─ restart.ps1       # restart script (kill process tree + relaunch exe)
+```
+
+## Notes
+
+- This is an alternative to modifying the installed main program: the plugin is added to the profile directly as a local bundle, without touching `app.asar`.
+- If you want "after the restart, automatically return to the original session and fill in 'restart complete'", you can extend it based on the pending record of `/restart` (`~/.dsh/storages/dsh-plugin-easy2restart/pending.json`); the current version does not fill the input box automatically.
+
+## License
+
+MIT
+
+</details>
