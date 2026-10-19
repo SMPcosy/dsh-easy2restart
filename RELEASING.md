@@ -40,11 +40,21 @@ tar -tzf dsh-plugin-easy2restart-<版本>.tgz
 
 读一遍文件清单：`lib/`、`cordis.patch.yml`、`restart/`、`README.md`、`LICENSE`、`icon.png`、README 引用的每张图。
 
-## 5. 发布（2FA）
+## 5. 发布（2FA）——必须在真实交互式终端里跑
 
-```bash
-pnpm publish --access public --no-git-checks   # 交互终端，会提示输入验证器 6 位码
+```powershell
+cd "C:\Users\Ren\Documents\deepseek-harness\插件工作区\dsh-plugin-easy2restart"
+& "C:\Users\Ren\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe" "C:\Users\Ren\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\bin\pnpm.cjs" publish --access public --no-git-checks --registry https://registry.npmjs.org
 ```
+
+**硬规则（2026-10-19/20 两次发布踩出来的）：**
+
+- registry 对写操作要求实时 2FA，**非交互进程一定失败**：`ERR_PNPM_OTP_NON_INTERACTIVE`。
+  agent 不要用后台 job 里的 pnpm 去 publish，也不要用 `npm stage approve`（同样要 `--otp`）。
+- 正确做法：开一个**可见的真终端窗口**跑上面的命令，由用户完成验证（浏览器批准或动态码）。
+- **不要反复重试**：连续多次认证失败没有任何好处，还可能触发风控。一次失败就停下来问用户。
+- **不要中途 kill 发布窗口**：命令可能已经发行成功（0.1.5 就是这样发的）。先查 registry 再决定。
+- 发布前最后确认三件事：`package.json` 版本号是新的、`pnpm pack` 的 tarball 内容对、`check:readme` 通过。
 
 ## 6. 发布后核对
 
