@@ -1,6 +1,55 @@
 # dsh-plugin-easy2restart
 
-<details open>
+## ⚠️ 已知 DSH 启动问题（与本插件无关）
+
+**现象｜Symptom**
+
+![DSH 启动失败弹窗](error-dialog.png)
+
+启动 DSH 时弹出上面这个窗口：「The application could not start or stopped unexpectedly.」，正文是 `desktop welcome: Web authentication failed`，并附诊断日志路径（`%APPDATA%\@deepseek-ai\dsh-desktop\logs\` 下的 crash/host 日志）；按钮为 `Exit` / `Restart` / `Disable third-party plugins, back up profile patch, and restart`。主界面进不去，日志目录里每次多一条 `phase: startup` 的崩溃记录。
+
+**原因｜Cause**
+
+每次启动 DSH 都会向桌面 cookie 库新增一条 `dsh-auth-*` cookie（127.0.0.1、每次启动端口随机，所以 cookie 名不同、不会覆盖旧条目）。它的有效期是 **30 天**，30 天内不会自己消失；累积到 **71 条**时 Cookie 请求头超过 16 KB 上限，host 返回 **431**，桌面握手失败 —— 就是上面这个弹窗。所以**重启越频繁，越快撞线**：一天重启几次的话，大约一个月内必然出现。
+
+**为什么点「Disable…」没用｜Why the "Disable" button doesn't help**
+
+这个按钮只是**禁用**所有第三方插件（注意是禁用，不是删除、不是清空 —— 插件本体和配置都还在），然后重启一次。问题出在 cookie 累积，跟插件没有关系，所以点完照样起不来，反而暂时失去全部第三方插件能力，还得手动重新启用。`Restart` 按钮同理，只会再撞一次。
+
+**处理办法｜Fix**
+
+1. 完全退出 DSH（含托盘与后台进程）。
+2. 清掉 `%APPDATA%\@deepseek-ai\dsh-desktop\Network\Cookies` 里的 `dsh-auth-*`：用 SQLite 执行 `DELETE FROM cookies WHERE host_key='127.0.0.1' AND name LIKE 'dsh-auth-%';`，或直接删除 `Cookies` 文件（只影响免登录状态，不影响账号与会话）。
+3. 或安装 `dsh-cookie-guard`：DSH 关闭时每分钟自动清理，推荐用于长期防复发。
+4. 重新打开 DSH；cookie 会按需重新签发，不用重新登录，会话与工作区不受影响。
+
+---
+
+## ⚠️ Known DSH startup issue (unrelated to this plugin)
+
+**Symptom**
+
+![DSH startup failure dialog](error-dialog.png)
+
+On launch DSH shows the dialog above: "The application could not start or stopped unexpectedly." with `desktop welcome: Web authentication failed` and a diagnostic log path under `%APPDATA%\@deepseek-ai\dsh-desktop\logs\`. The buttons are `Exit`, `Restart`, and `Disable third-party plugins, back up profile patch, and restart`. The main window never opens, and a new `phase: startup` crash log is written each time.
+
+**Cause**
+
+Every DSH launch adds one `dsh-auth-*` cookie to the desktop cookie store (host 127.0.0.1, random port each boot, so the cookie name differs and old entries are never overwritten). They live for **30 days**, so nothing expires on its own; at **71 cookies** the Cookie header exceeds the 16 KB limit, the host answers **431** and the desktop handshake fails — that is the dialog above. In other words, **the more often you restart, the sooner you hit the limit** (a few restarts a day gets you there within roughly a month).
+
+**Why the "Disable …" button doesn't help**
+
+It only **disables** all third-party plugins (disables — it does not delete or clear anything; the plugins and their config stay on disk) and then restarts. The problem is cookie accumulation, not plugins, so DSH still fails to start, and you just lose every third-party plugin until you re-enable them. The `Restart` button fails the same way.
+
+**Fix**
+
+1. Quit DSH completely (tray icon and background processes too).
+2. Remove the `dsh-auth-*` rows from `%APPDATA%\@deepseek-ai\dsh-desktop\Network\Cookies` (SQLite: `DELETE FROM cookies WHERE host_key='127.0.0.1' AND name LIKE 'dsh-auth-%';`), or simply delete the `Cookies` file (it only holds the "stay signed in" state, not account or sessions).
+3. Alternatively install `dsh-cookie-guard`, which cleans them every minute while DSH is closed (recommended long-term).
+4. Open DSH again; cookies are re-issued on demand — no re-login, no session or workspace loss.
+
+<details>
+
 <summary><b>🀄 中文（默认展开）</b></summary>
 
 # 已发布到官方NPM
@@ -16,9 +65,9 @@ DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放�
 - 有 Agent 会话**运行中**时按钮置灰禁用（依据 DSH 会话状态 `running`）。
 - 无会话运行时按钮可点；宿主管理保存一个「重启待办」，便于后续扩展「重启后回到原会话」等流程。
 
-<img width="2558" height="1638" alt="dsh-pluin-restart-02" src="https://github.com/user-attachments/assets/1cd364ed-3048-4104-928c-46566ba9bcc6" />
+![dsh-pluin-restart-02](https://github.com/user-attachments/assets/1cd364ed-3048-4104-928c-46566ba9bcc6)
 
-<img width="2561" height="1638" alt="dsh-pluin-restart-01" src="https://github.com/user-attachments/assets/93e5d1e5-6647-4e03-9f8f-e491e3a4640d" />
+![dsh-pluin-restart-01](https://github.com/user-attachments/assets/93e5d1e5-6647-4e03-9f8f-e491e3a4640d)
 
 ## 依赖
 
@@ -32,7 +81,8 @@ DeepSeek Harness 重启插件：在左侧边栏**账号头像/设置上方**放�
 ```bash
 dsh-plugin-easy2restart
 ```
-复制上述内容（插件名），进行如下操作：
+
+复制上述内容（插件名），进行如下操作：  
 <img width="2558" height="1640" alt="dsh-plugin-easy2restart安装图示​" src="https://github.com/user-attachments/assets/6b719ee2-7ed9-4913-8c3b-99709d5b5e06" />
 
 若发布到 registry：
@@ -88,6 +138,7 @@ MIT
 </details>
 
 <details>
+
 <summary><b>🌐 English</b></summary>
 
 # Published on official NPM
@@ -103,9 +154,9 @@ A DeepSeek Harness restart plugin: it places a "⟳ Restart DSH" button in the l
 - The button is greyed out while an agent session is **running** (based on the DSH session status `running`).
 - When no session is running, the button is clickable; the host keeps a "restart pending" record so that flows such as "return to the original session after restart" can be added later.
 
-<img width="2558" height="1638" alt="dsh-pluin-restart-02" src="https://github.com/user-attachments/assets/1cd364ed-3048-4104-928c-46566ba9bcc6" />
+![dsh-pluin-restart-02](https://github.com/user-attachments/assets/1cd364ed-3048-4104-928c-46566ba9bcc6)
 
-<img width="2561" height="1638" alt="dsh-pluin-restart-01" src="https://github.com/user-attachments/assets/93e5d1e5-6647-4e03-9f8f-e491e3a4640d" />
+![dsh-pluin-restart-01](https://github.com/user-attachments/assets/93e5d1e5-6647-4e03-9f8f-e491e3a4640d)
 
 ## Requirements
 
@@ -119,7 +170,8 @@ A DeepSeek Harness restart plugin: it places a "⟳ Restart DSH" button in the l
 ```bash
 dsh-plugin-easy2restart
 ```
-Copy the plugin name above, then follow the steps below:
+
+Copy the plugin name above, then follow the steps below:  
 <img width="2558" height="1640" alt="dsh-plugin-easy2restart install illustration" src="https://github.com/user-attachments/assets/6b719ee2-7ed9-4913-8c3b-99709d5b5e06" />
 
 If publishing to a registry:
