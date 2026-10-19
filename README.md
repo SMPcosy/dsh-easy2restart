@@ -4,7 +4,7 @@
 
 **现象｜Symptom**
 
-![DSH 启动失败弹窗](error-dialog.png)
+![DSH 启动失败弹窗（截图）](https://cdn.jsdelivr.net/npm/dsh-plugin-easy2restart/error-dialog.png)
 
 启动 DSH 时弹出上面这个窗口：「The application could not start or stopped unexpectedly.」，正文是 `desktop welcome: Web authentication failed`，并附诊断日志路径（`%APPDATA%\@deepseek-ai\dsh-desktop\logs\` 下的 crash/host 日志）；按钮为 `Exit` / `Restart` / `Disable third-party plugins, back up profile patch, and restart`。主界面进不去，日志目录里每次多一条 `phase: startup` 的崩溃记录。
 
@@ -29,7 +29,7 @@
 
 **Symptom**
 
-![DSH startup failure dialog](error-dialog.png)
+![DSH startup failure dialog (screenshot)](https://cdn.jsdelivr.net/npm/dsh-plugin-easy2restart/error-dialog.png)
 
 On launch DSH shows the dialog above: "The application could not start or stopped unexpectedly." with `desktop welcome: Web authentication failed` and a diagnostic log path under `%APPDATA%\@deepseek-ai\dsh-desktop\logs\`. The buttons are `Exit`, `Restart`, and `Disable third-party plugins, back up profile patch, and restart`. The main window never opens, and a new `phase: startup` crash log is written each time.
 
