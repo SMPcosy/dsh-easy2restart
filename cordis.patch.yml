@@ -1,11 +1,11 @@
 # ============================================================================
-# dsh-plugin-easy2restart — DSH bundle patch
+# dsh-easy2restart — DSH bundle patch
 # ============================================================================
-# 将重启插件插入当前 profile 的配置树（宿主插件 + Web 客户端端）。
+# 将「重启 + 安全归档」插件插入当前 profile 的配置树（宿主插件 + Web 客户端端）。
 # 安装方式（无需手工改 profile）：
 #   dsh plugin --profile desktop add link:<本目录绝对路径>
 # 卸载：把本条目从 profile 的 cordis.patch.yml / bundle 列表移除后重启 DSH。
 
 - insert:
-    - id: dsh-plugin-easy2restart
-      name: dsh-plugin-easy2restart
+    - id: dsh-easy2restart
+      name: dsh-easy2restart

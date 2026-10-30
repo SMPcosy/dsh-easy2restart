@@ -1,25 +1,33 @@
 {
-  "name": "dsh-plugin-easy2restart",
-  "version": "0.1.5",
+  "name": "dsh-easy2restart",
+  "version": "0.2.1",
   "type": "module",
-  "description": "DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness; it is greyed out while an agent session is running. （中文：DSH 重启插件：双击侧边栏重启按钮即可整体重启 DeepSeek Harness，会话运行时按钮置灰禁用。）",
+  "description": "DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness, plus safe session archiving (confirm dialog + 10s countdown when the session is still busy) and an auto-backup of every archived session. （中文：DSH 重启 + 安全归档插件：双击侧边栏按钮整体重启 DeepSeek Harness；归档会话前先确认、会话仍在活动时倒计时后才能停止归档；任意入口归档成功后自动备份归档会话。）",
   "keywords": [
     "deepseek-harness",
     "dsh",
     "dsh-plugin",
     "restart",
-    "relaunch"
+    "relaunch",
+    "archive",
+    "backup",
+    "session"
   ],
   "license": "MIT",
   "icon": "./icon.png",
   "main": "lib/index.js",
   "scripts": {
+    "test": "node test/plugin.selftest.mjs",
     "check:readme": "node scripts/check-readme-assets.mjs",
     "check:readme:remote": "node scripts/check-readme-assets.mjs --remote"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SMPcosy/dsh-plugin-easy2restart.git"
+    "url": "git+https://github.com/SMPcosy/dsh-easy2restart.git"
+  },
+  "homepage": "https://github.com/SMPcosy/dsh-easy2restart#readme",
+  "bugs": {
+    "url": "https://github.com/SMPcosy/dsh-easy2restart/issues"
   },
   "exports": {
     ".": "./lib/index.js",
@@ -30,7 +38,10 @@
     "lib",
     "cordis.patch.yml",
     "restart",
+    "test",
     "README.md",
+    "CHANGELOG.md",
+    "RENAME.md",
     "LICENSE",
     "icon.png",
     "error-dialog.png"
@@ -42,7 +53,8 @@
     "client": {
       "inject": [
         "@deepseek-ai/dsh-client-ui-slots",
-        "@deepseek-ai/dsh-client-locale"
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
       ],
       "platform": "web"
     }
