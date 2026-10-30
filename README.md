@@ -99,6 +99,19 @@ DSH 重启 + 安全归档插件。`0.2.0` 起由 `dsh-plugin-easy2restart` 与 `
 - 禁用态用灰底 + 去阴影（不用半透明，避免读成"坏了"）；报错紧贴字段，不弹 toast；
 - 动效 120–300ms，且完整响应系统的「减少动态效果」；按钮热区 36px，键盘可聚焦并有可见焦点环。
 
+<table>
+<tr>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/03-archive-dialog.png" alt="归档确认弹窗" /></td>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/05-archive-pane.png" alt="右侧栏「已归档会话」" /></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/06-backup-settings.png" alt="自动备份设置" /></td>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/02-restart-button.png" alt="侧边栏重启按钮" /></td>
+</tr>
+</table>
+
+更多截图：`screenshots/`（插件列表图标、右侧栏类型选择页、归档清单）。
+
 ## 接口
 
 | 方法 | 路径 | 说明 |
@@ -277,6 +290,19 @@ The "Archived sessions" page carries an "Auto-backup" card, collapsed to one sum
 - All icons are inline SVG (restart ring, archive tray, folder, warning) — no bitmaps.
 - Disabled states use a grey fill and no shadow instead of opacity (opacity reads as "broken"); errors sit next to their field, never in a toast.
 - Motion is 120–300ms and honours `prefers-reduced-motion`; buttons keep a 36px hit area, are keyboard reachable and show a visible focus ring.
+
+<table>
+<tr>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/03-archive-dialog.png" alt="Archive confirmation dialog" /></td>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/05-archive-pane.png" alt="Archived sessions pane" /></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/06-backup-settings.png" alt="Auto-backup settings" /></td>
+<td><img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/screenshots/02-restart-button.png" alt="Sidebar restart button" /></td>
+</tr>
+</table>
+
+More screenshots: `screenshots/` (plugin list icon, right-sidebar picker, archive list).
 
 ## HTTP routes
 
