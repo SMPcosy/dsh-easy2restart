@@ -49,14 +49,40 @@ npm deprecate "dsh-plugin-easy2restart@*" "Renamed to dsh-easy2restart (merged w
 > 以及在旧包 README 顶部写迁移说明。后者要生效必须在**旧包名下**再发一个版本（建议 0.1.6，只改 README，
 > 内容直接指到 [RENAME.md](./RENAME.md)）。这一步可选，收益是"搜到旧包的人一眼看到新包名"。
 
-GitHub 侧（需仓库管理员账号操作，agent 不做）：
+### 2026-10-31 的实操记录（0.2.1 真发过一次，以下全部实测）
 
-1. 把仓库 `SMPcosy/dsh-plugin-easy2restart` **改名**为 `SMPcosy/dsh-easy2restart`（GitHub 会自动重定向旧地址，star / issue 一并跟随）；
+这台机器**没有装 npm CLI**（`npm-cli.js` / `npm.cmd` 都不存在），只有 pnpm，所以两条命令的实际走法不一样：
+
+1. **publish 用 pnpm，必须给交互式终端**。非交互跑会直接失败：
+   `[ERR_PNPM_OTP_NON_INTERACTIVE] The registry requires additional authentication, but pnpm is not running in an interactive terminal`。
+   交互式下它会打印 `https://www.npmjs.com/auth/cli/<id>`，在浏览器里用 Windows Hello PIN 批准后自动继续，成功时打印
+   `✅ Published package dsh-easy2restart@0.2.1`。
+2. **发布成功不要立刻查普通 URL**。首发时 npm 会先建一个 `0.0.0-stage` 占位版本（description
+   `Temporary package placeholder for staged publishing`），读路径还有 CDN 缓存：
+   - 普通 `GET /dsh-easy2restart` 可能仍只报 `latest=0.0.0-stage`；
+   - 普通 `GET .../-/dsh-easy2restart-0.2.1.tgz` 会 **404**，连 `pnpm add` 都会 `ERR_PNPM_FETCH_404`。
+   加 `?write=true` 直接读源站才是真实结果（`latest=0.2.1`、`dist.fileCount=12`）。
+   实测这轮缓存穿了约 8 分钟：之后 tarball 200、jsdelivr 的 `cdn.jsdelivr.net/npm/dsh-easy2restart@0.2.1/icon.png` 也 200。
+   所以**发布后要等能装成功再宣布**，验证方式是在临时目录真装一遍：
+   `node <pnpm.cjs> add dsh-easy2restart@0.2.1 --dir <临时目录> --registry=https://registry.npmjs.org/`。
+3. **deprecate 用 pnpm 做不到**，会报 `ERR_PNPM_UNAUTHORIZED ... You must provide a one-time pass`。
+   npm 12 才支持 EOTP 的浏览器审批。没有 npm CLI 时临时下载一份即可：
+   `https://registry.npmjs.org/npm/-/npm-12.2.1.tgz` → 解包 → `node package\bin\npm-cli.js deprecate ...`。
+   交互式运行会打印 `https://www.npmjs.com/auth/cli/<id>`，浏览器批准后**自动重试并成功**（这次 7 个版本全部打上 deprecated）。
+4. **token 位置**：`~/.npmrc` 里那条 `npm_...` 已经失效（`GET /-/whoami` → 401），别拿它跑写入。
+   `pnpm login` 写入的有效 token 在 `C:\Users\Ren\AppData\Local\pnpm\config\auth.ini`。
+   给 npm CLI 用时写一份临时 npmrc 传 `--userconfig=<临时文件>`，**跑完立刻删掉**（里面是明文 token）。
+5. 验证 deprecate 是否生效：`GET https://registry.npmjs.org/dsh-plugin-easy2restart?write=true`，
+   逐个版本看 `deprecated` 字段（0.0.0-stage 占位版本也会被一起打上，正常）。
+
+GitHub 侧（1 已由仓库管理员在 2026-10-31 完成，其余是网页操作）：
+
+1. ✅ 仓库 `SMPcosy/dsh-plugin-easy2restart` 已**改名**为 `SMPcosy/dsh-easy2restart`（GitHub 自动重定向旧地址，star / issue 一并跟随；本地 `origin` 已同步为 `https://github.com/SMPcosy/dsh-easy2restart.git`）；
 2. 改名后旧地址 `https://github.com/SMPcosy/dsh-plugin-easy2restart` 仍能打开，指向新的 README 与 [RENAME.md](./RENAME.md)；
 3. 把仓库 About 里的 npm 徽章、链接改成 `dsh-easy2restart`；
 4. **不要新建同名空仓库** `dsh-plugin-easy2restart`：新建会顶掉 GitHub 的重定向，旧 git 地址、旧 raw 图片链接会立刻 404；
    想留落点页就把声明写在新仓库的 README / RENAME.md 里（已经写了）。
-5. 打 tag `v0.2.1` 并发布 Release，正文直接贴 [CHANGELOG.md](./CHANGELOG.md) 的 0.2.1 段。
+5. 打 tag `v0.2.1` 并发布 Release，正文直接贴 [CHANGELOG.md](./CHANGELOG.md) 的 0.2.1 段（tag 已推到 `3cdbabe`，Release 正文需在网页上发）。
 
 > README 里的图片与图标用的是 `https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/...`，
 > **仓库改名之后**才会变成可访问（实测：GitHub 对改名前的 raw 地址保留别名，但新地址在改名之前一定是 404）。
