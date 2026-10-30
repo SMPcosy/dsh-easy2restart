@@ -18,8 +18,10 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "node test/plugin.selftest.mjs",
+    "prepublishOnly": "node test/plugin.selftest.mjs && node scripts/check-readme-assets.mjs --remote --strict",
     "check:readme": "node scripts/check-readme-assets.mjs",
-    "check:readme:remote": "node scripts/check-readme-assets.mjs --remote"
+    "check:readme:remote": "node scripts/check-readme-assets.mjs --remote",
+    "check:readme:remote:strict": "node scripts/check-readme-assets.mjs --remote --strict"
   },
   "repository": {
     "type": "git",

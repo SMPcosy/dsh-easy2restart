@@ -155,7 +155,8 @@ dsh plugin --profile desktop add dsh-easy2restart@0.2.1
 
 装完**重启 DeepSeek Harness**（插件不支持热加载），侧边栏底部账号头像上方即出现重启按钮，右侧栏引导页出现「已归档会话」。
 
-> 从旧包迁移：先 `dsh plugin --profile desktop remove dsh-plugin-easy2restart`（以及 `dsh-plugin-safe-archive`），再装本包。
+> 从旧包迁移：先 `dsh plugin --profile desktop remove dsh-plugin-easy2restart`（如果你曾在本地装过
+> `dsh-plugin-safe-archive` 也一并 remove；它从未发布到 npm），再装本包。
 > 两个旧插件的能力已全部并入，状态文件、备份目录与配置完全兼容，无需迁移数据。
 
 ## 使用
@@ -331,7 +332,8 @@ dsh plugin --profile desktop add dsh-easy2restart@0.2.1
 
 After installing, **restart DeepSeek Harness** (plugins are not hot-reloaded); the restart button appears at the bottom of the sidebar and the "Archived sessions" page shows up in the right sidebar.
 
-> Migrating from the old packages: remove `dsh-plugin-easy2restart` (and `dsh-plugin-safe-archive`) first, then install this one. State files, backup folder and configuration are fully compatible — no data migration is needed.
+> Migrating from the old package: remove `dsh-plugin-easy2restart` first (also remove `dsh-plugin-safe-archive`
+> if you had it installed locally — it was never published to npm), then install this one. State files, backup folder and configuration are fully compatible — no data migration is needed.
 
 ## Usage
 

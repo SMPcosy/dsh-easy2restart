@@ -16,8 +16,8 @@
 
 | | 旧 | 新 |
 |---|---|---|
-| npm 包 | `dsh-plugin-easy2restart`（≤ 0.1.5） | **`dsh-easy2restart`**（≥ 0.2.0） |
-| npm 包 | `dsh-plugin-safe-archive`（≤ 0.2.0） | 并入 **`dsh-easy2restart`** |
+| npm 包 | `dsh-plugin-easy2restart`（≤ 0.1.5） | **`dsh-easy2restart`**（首发 0.2.1） |
+| npm 包 | `dsh-plugin-safe-archive`（**从未发布到 npm**，仅本地源码） | 并入 **`dsh-easy2restart`** |
 | GitHub 仓库 | `SMPcosy/dsh-plugin-easy2restart` | **`SMPcosy/dsh-easy2restart`** |
 | 宿主接口前缀 | `/api/dsh-plugin-easy2restart`、`/api/dsh-plugin-safe-archive` | `/api/dsh-easy2restart` |
 | 状态目录 | `~/.dsh/storages/dsh-plugin-easy2restart` | `~/.dsh/storages/dsh-easy2restart` |
@@ -31,7 +31,7 @@
 ## 怎么迁移
 
 ```bash
-# 1. 卸掉旧的两个（装过哪个卸哪个）
+# 1. 卸掉旧的两个（装过哪个卸哪个；safe-archive 从未发布到 npm，没装过就跳过）
 dsh plugin --profile desktop remove dsh-plugin-easy2restart
 dsh plugin --profile desktop remove dsh-plugin-safe-archive
 

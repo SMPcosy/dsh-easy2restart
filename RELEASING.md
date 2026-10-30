@@ -33,23 +33,53 @@
 
 ### 0.2.1 的额外动作（改名收尾）
 
+新包 `dsh-easy2restart` 在 npm 上是**全新包名**（2026-10-31 查 registry：404，未被占用），
+首次 `publish` 时 npm 会自动创建它 —— 不需要（也没有）"新建 package"这一步。
+
 发完新包之后，把旧名字标成已弃用（**只 deprecate，不 unpublish**；下架会让已装用户的 lockfile 失效）：
 
 ```powershell
-npm deprecate "dsh-plugin-easy2restart@*" "Renamed to dsh-easy2restart (merged with dsh-plugin-safe-archive). Install dsh-easy2restart instead: https://www.npmjs.com/package/dsh-easy2restart"
-npm deprecate "dsh-plugin-safe-archive@*"  "Merged into dsh-easy2restart. Install dsh-easy2restart instead: https://www.npmjs.com/package/dsh-easy2restart"
+npm deprecate "dsh-plugin-easy2restart@*" "Renamed to dsh-easy2restart (merged with the safe-archive plugin). Install dsh-easy2restart instead: https://www.npmjs.com/package/dsh-easy2restart"
 ```
+
+> `dsh-plugin-safe-archive` **从未发布到 npm**（registry 查询 404，只有一个本地源码目录），
+> 所以没有可 deprecate 的对象，跑 `npm deprecate dsh-plugin-safe-archive@*` 只会报 404。
+
+> 旧包的 npm 页面本身不会自动"链"到新包，能做的只有两件：上面那条 deprecate 提示（用户 `npm i` 时会看到），
+> 以及在旧包 README 顶部写迁移说明。后者要生效必须在**旧包名下**再发一个版本（建议 0.1.6，只改 README，
+> 内容直接指到 [RENAME.md](./RENAME.md)）。这一步可选，收益是"搜到旧包的人一眼看到新包名"。
 
 GitHub 侧（需仓库管理员账号操作，agent 不做）：
 
 1. 把仓库 `SMPcosy/dsh-plugin-easy2restart` **改名**为 `SMPcosy/dsh-easy2restart`（GitHub 会自动重定向旧地址，star / issue 一并跟随）；
 2. 改名后旧地址 `https://github.com/SMPcosy/dsh-plugin-easy2restart` 仍能打开，指向新的 README 与 [RENAME.md](./RENAME.md)；
 3. 把仓库 About 里的 npm 徽章、链接改成 `dsh-easy2restart`；
-4. 如果希望旧地址长期保留一个"已改名"的落点页，可在改名后**新建**同名空仓库 `dsh-plugin-easy2restart`，只放一份指向新仓库的 README（可选，GitHub 重定向已够用）；
+4. **不要新建同名空仓库** `dsh-plugin-easy2restart`：新建会顶掉 GitHub 的重定向，旧 git 地址、旧 raw 图片链接会立刻 404；
+   想留落点页就把声明写在新仓库的 README / RENAME.md 里（已经写了）。
 5. 打 tag `v0.2.1` 并发布 Release，正文直接贴 [CHANGELOG.md](./CHANGELOG.md) 的 0.2.1 段。
 
 > README 里的图片与图标用的是 `https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/...`，
-> **仓库改名 + push 之后**才会变成可访问；发布前先确认这几张图 200。
+> **仓库改名之后**才会变成可访问（实测：GitHub 对改名前的 raw 地址保留别名，但新地址在改名之前一定是 404）。
+> 发布前跑**严格门禁**（把远端 404 从 warn 升级成 error，不过就不许发）：
+>
+> ```powershell
+> pnpm check:readme:remote:strict    # = node scripts/check-readme-assets.mjs --remote --strict
+> ```
+>
+> 2026-10-31 实测：仓库还没改名时，这两条 URL 都是 `404 text/plain`，严格门禁会红 —— 这是**预期**，
+> 改完仓库名再跑一次就会绿。只跑不加 `--remote` 的静态检查永远是绿的，别拿它当"图能显示"的证据。
+>
+> 若你打算**先发 npm 再改名**，先把 README 两处 URL 换成旧名（改名后 GitHub 仍会把旧名重定向到新仓库，实测可用），
+> 发布后再换回来。用 Python 改，**不要**用 PowerShell 的 `Get-Content/Set-Content`（本机 pwsh 是 5.1，默认按 cp936
+> 读 UTF-8，会把整份中文 README 读成乱码）：
+>
+> ```powershell
+> $py = 'C:\Users\Ren\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe'
+> # 新 → 旧
+> & $py -c "import io;p='README.md';s=io.open(p,encoding='utf-8').read();s=s.replace('/dsh-easy2restart/main/','/dsh-plugin-easy2restart/main/');io.open(p,'w',encoding='utf-8',newline='').write(s)"
+> # 旧 → 新（改名完成后跑这条换回来）
+> & $py -c "import io;p='README.md';s=io.open(p,encoding='utf-8').read();s=s.replace('/dsh-plugin-easy2restart/main/','/dsh-easy2restart/main/');io.open(p,'w',encoding='utf-8',newline='').write(s)"
+> ```
 
 ## 2. 图片静态检查（必过）
 
