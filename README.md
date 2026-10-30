@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/SMPcosy/dsh-easy2restart/main/icon.png" width="88" height="88" alt="dsh-easy2restart icon" align="right" />
 
-DSH 重启 + 安全归档插件。`0.2.0` 起由 `dsh-plugin-easy2restart` 与 `dsh-plugin-safe-archive` 合并而来，`0.2.1` 完成界面重做与「自动备份」可配置化。
+DSH 重启 + 安全归档插件。`0.2.0` 起由 `dsh-plugin-easy2restart` 与 `dsh-plugin-safe-archive` 合并而来，`0.2.1` 完成界面重做与「自动备份」可配置化，`0.2.2` 修复界面上暴露的 5 处问题。
 
 > **📦 包名 / 仓库已改名**
 > 旧：`dsh-plugin-easy2restart`（GitHub 同名仓库）+ `dsh-plugin-safe-archive` → 新：**`dsh-easy2restart`**
@@ -150,7 +150,7 @@ node test/plugin.selftest.mjs
 在「插件 / 查检中心」里搜 `dsh-easy2restart`，或直接：
 
 ```bash
-dsh plugin --profile desktop add dsh-easy2restart@0.2.1
+dsh plugin --profile desktop add dsh-easy2restart
 ```
 
 装完**重启 DeepSeek Harness**（插件不支持热加载），侧边栏底部账号头像上方即出现重启按钮，右侧栏引导页出现「已归档会话」。
@@ -327,7 +327,7 @@ Precedence: **environment > config file > built-in default**.
 > Prerequisite: the `dsh` command must be on PATH (bundled with DeepSeek Harness).
 
 ```bash
-dsh plugin --profile desktop add dsh-easy2restart@0.2.1
+dsh plugin --profile desktop add dsh-easy2restart
 ```
 
 After installing, **restart DeepSeek Harness** (plugins are not hot-reloaded); the restart button appears at the bottom of the sidebar and the "Archived sessions" page shows up in the right sidebar.

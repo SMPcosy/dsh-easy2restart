@@ -513,6 +513,43 @@ check(
   !/border-radius\s*:\s*(?!var\(--e2r-r(?:-sm)?\)|50%|999px|3px|0\b|inherit|[\d.]+%\s*\/)[0-9]/i.test(clientSrc.replace(/--e2r-r[\s\S]{0,40}/g, "")),
 );
 
+// ---- 6. 0.2.2 回归：备份快照来源 / 卡片单层边界 / 摘要不重复状态 ----
+check(
+  "0.2.2：roots 不再冒充备份快照（setBackup(data) 已移除）",
+  !/setBackup\(data\)/.test(clientSrc),
+  "loadRoots 必须只 setRoots，备份快照走 /backup",
+);
+check(
+  "0.2.2：loadRoots 内改用 refreshBackupCache()",
+  /setRoots\(data\);[\s\S]{0,400}refreshBackupCache\(\)/.test(clientSrc),
+);
+check(
+  "0.2.2：弹窗路径回退到 defaultDir",
+  /backup\.dir\s*\|\|\s*backup\.defaultDir/.test(clientSrc),
+);
+check(
+  "0.2.2：自动备份开合两态各自只有一层边界",
+  !/className: "e2r-card-box"[\s\S]{0,200}h\(BackupSettings/.test(clientSrc),
+  "展开态直接渲染 BackupSettings，不再套 e2r-card-box",
+);
+check(
+  "0.2.2：展开态自带收起按钮",
+  /onCollapse:\s*\(\)\s*=>/.test(clientSrc) && /zh\.collapse/.test(clientSrc),
+);
+check(
+  "0.2.2：摘要行不重复状态文案",
+  !/zh\.backupTitle \+ " · "/.test(clientSrc),
+  "状态只交给右侧 chip",
+);
+check(
+  "0.2.2：重启按钮禁用态保留描边",
+  /\.e2r-btn:disabled\{[^}]*border-color:var\(--e2r-line\)/.test(clientSrc),
+);
+check(
+  "0.2.2：卡片行右内边距 ≥15px（分段控件不再贴边）",
+  /\.e2r-card-box>\.e2r-card-row\{[^}]*padding:11px 15px/.test(clientSrc),
+);
+
 /* =============================== 汇总 =============================== */
 const failed = results.filter((r) => !r.ok);
 console.log("\n===== 自检汇总: " + (results.length - failed.length) + "/" + results.length + " 通过 =====");
