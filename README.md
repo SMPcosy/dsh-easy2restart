@@ -163,8 +163,11 @@ node test/plugin.selftest.mjs
 在「插件 / 查检中心」里搜 `dsh-easy2restart`，或直接：
 
 ```bash
-dsh plugin --profile desktop add dsh-easy2restart
+dsh plugin --profile desktop add dsh-easy2restart@0.2.3
 ```
+
+> 为什么钉版本：pnpm 有 `minimumReleaseAge`（默认 24 小时），裸写包名时**刚发布的新版会被跳过**，
+> 装到上一版是常态。想要最新版就写死版本号，装完再 `dsh plugin --profile desktop list` 核对。
 
 装完**重启 DeepSeek Harness**（插件不支持热加载），侧边栏底部账号头像上方即出现重启按钮，右侧栏引导页出现「已归档会话」。
 
@@ -353,8 +356,10 @@ Precedence: **environment > config file > built-in default**.
 > Prerequisite: the `dsh` command must be on PATH (bundled with DeepSeek Harness).
 
 ```bash
-dsh plugin --profile desktop add dsh-easy2restart
+dsh plugin --profile desktop add dsh-easy2restart@0.2.3
 ```
+
+> Why pin the version: pnpm honours `minimumReleaseAge` (default 24 hours), so a bare package name **skips a version published minutes ago** and resolves to the previous one. Pin the version when you want the newest build, then confirm with `dsh plugin --profile desktop list`.
 
 After installing, **restart DeepSeek Harness** (plugins are not hot-reloaded); the restart button appears at the bottom of the sidebar and the "Archived sessions" page shows up in the right sidebar.
 

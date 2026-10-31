@@ -1,6 +1,6 @@
 {
   "name": "dsh-easy2restart",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "module",
   "description": "DSH plugin: double-click the sidebar restart button to fully relaunch DeepSeek Harness, plus safe session archiving (confirm dialog + 10s countdown when the session is still busy) and an auto-backup of every archived session. （中文：DSH 重启 + 安全归档插件：双击侧边栏按钮整体重启 DeepSeek Harness；归档会话前先确认、会话仍在活动时倒计时后才能停止归档；任意入口归档成功后自动备份归档会话。）",
   "keywords": [
